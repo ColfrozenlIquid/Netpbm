@@ -18,9 +18,8 @@ Image Image::open(std::string path) {
         int line_count = 0;
         while (getline(imagefile, line)){
             parse_line(image, line);
+            write_data(image, line);
         }
-        std::cout << "Pixel count is: " << (count - 4) / 3 << '\n';
-        std::cout << "Line count is: " << line_count << '\n'; 
         imagefile.close();
     }
     else {
@@ -32,37 +31,44 @@ Image Image::open(std::string path) {
 
 void Image::save(const Image& image) {}
 
+void Image::write_data(Image& image, std::string line) {
+    image.m_stringdata.push_back(line);
+}
+
 void Image::parse_line(Image& image, std::string line) {
-    std::basic_regex<char> rgx = std::regex("[P{1,2,3,4,5,6}]");
-    std::string str1 = "P6\n";
-    std::cout << "String size is: " << str1.size() << '\n';
-    if(std::regex_match(line, rgx)) {
-        if(line.size() == 3) {
-            char img_type_token = line.at(2);
+    if(std::regex_match(line, std::regex("(P[1-6])"))) {
+        if(line.size() == 2) {
+            char img_type_token = line.at(1);
             switch (img_type_token) {
             case '1':
                 image.m_image_type = Image_Type::PBM;
                 image.m_content_type = Content_Type::ASCII;
+                std::cout << "Opening PBM file" << '\n';
                 break;
             case '2':
                 image.m_image_type = Image_Type::PGM;
                 image.m_content_type = Content_Type::ASCII;
+                std::cout << "Opening PGM file" << '\n';
                 break;
             case '3':
                 image.m_image_type = Image_Type::PPM;
                 image.m_content_type = Content_Type::ASCII;
+                std::cout << "Opening PPM file" << '\n';
                 break;
             case '4':
                 image.m_image_type = Image_Type::PBM;
                 image.m_content_type = Content_Type::BINARY;
+                std::cout << "Opening PBM file" << '\n';
                 break;
             case '5':
                 image.m_image_type = Image_Type::PGM;
                 image.m_content_type = Content_Type::BINARY;
+                std::cout << "Opening PGM file" << '\n';
                 break;
             case '6':
                 image.m_image_type = Image_Type::PPM;
                 image.m_content_type = Content_Type::BINARY;
+                std::cout << "Opening PPM file" << '\n';
                 break;
             default:
                 break;

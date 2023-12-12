@@ -23,13 +23,15 @@ enum Content_Type {
 class Image {
     public:
         Image();
-        Image(std::string path, Image_Type type, int width, int height);
+        Image(std::string path, Image_Type i_type, Content_Type c_type, int width, int height);
         ~Image();
         static Image open(std::string path);
         void save(const Image& image);
+        void read_image(const Image& image);
 
     private:
         std::vector<Pixel> m_pixeldata;
+        std::vector<std::string> m_stringdata;
         std::string m_path;
         int m_width;
         int m_height;
@@ -37,4 +39,5 @@ class Image {
         Content_Type m_content_type;
 
         static void parse_line(Image& image, std::string line);
+        static void write_data(Image& image, std::string line);
 };
