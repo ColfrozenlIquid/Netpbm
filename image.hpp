@@ -28,6 +28,17 @@ class Image {
         static Image open(std::string path);
         void save(const Image& image);
         void read_image(const Image& image);
+        void show_image_details();
+
+        std::vector<Pixel> get_pixeldata();
+        std::vector<std::string> get_stringdata();
+        std::string get_path();
+        int get_width();
+        int get_height();
+        Image_Type get_image_type();
+        std::string get_image_type_string();
+        Content_Type get_content_type();
+        std::string get_content_type_string();
 
     private:
         std::vector<Pixel> m_pixeldata;
@@ -40,4 +51,6 @@ class Image {
 
         static void parse_line(Image& image, std::string line);
         static void write_data(Image& image, std::string line);
+        std::string image_type_string(Image_Type i_type);
+        std::string content_type_string(Content_Type c_type);
 };
