@@ -27,6 +27,7 @@ typedef struct Header {
     std::vector<std::string> comment_vec;
     int width, height;
     Color_Type color_type;
+    int color_range;
 } Header;
 
 class Image : Pixel_Data {
@@ -57,6 +58,8 @@ class Image : Pixel_Data {
         static bool parse_header(Image& image, std::string line);
         static void parse_line(Image& image, std::string line);
         static void write_data(Image& image, std::string line);
+        static Color_Type parse_color_type(int color_range);
+
         std::string image_type_string(Image_Type i_type);
         std::string content_type_string(Content_Type c_type);
         std::string image_type_identifier_string(Image_Type i_type, Content_Type c_type);

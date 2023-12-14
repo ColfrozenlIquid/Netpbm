@@ -118,16 +118,30 @@ bool Image::parse_header(Image& image, std::string line) {
         image.image_header.height = std::stoi(match[2].str());
         return true;
     }
-    //Read out color-space
-    image.image_header.color_type = std::stoi(line); // convert to color type, if not found is empty (0-1)
+    //Read out color-spac
+    if (image.get_image_type() == Image_Type::PPM || image.get_image_type() == Image_Type::PGM) {
+        int color_range = std::stoi(line);
+        Color_Type color_type = parse_color_type(color_range);
+        image.image_header.color_type = color_type;
+        image.image_header.color_range = color_range;
+    } else {
+        int color_range = std::stoi(line);
+        image.image_header.color_type = Color_Type::MONO;
+        image.image_header.color_range = color_range;
+    }
     return false;
+}
+
+Color_Type Image::parse_color_type(int color_range) {
+    if (color_range < 255) {
+        return Color_Type::GRAY;
+    }
+    return Color_Type::RGB;
 }
 
 void Image::save(const Image& image) {}
 
-void Image::write_data(Image& image, std::string line) {
-    // image.m_pixeldata.push_back(line);
-}
+void Image::write_data(Image& image, std::string line) {} // image.m_pixeldata.push_back(line);
 
 bool Image::find_header(Image& image, std::string line) {
     //Check for Image_Type
@@ -277,7 +291,7 @@ void Image::print_image_data() {
 }
 
 Color_Type Image::get_color() {
-    return this->image_body
+    return this->image_body;
 }
 
 int Image::get_width(){
